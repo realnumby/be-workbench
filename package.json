@@ -1,0 +1,39 @@
+{
+  "name": "be-workbench",
+  "version": "1.0.0",
+  "description": "Backend for workbench UI",
+  "main": "index.js",
+  "scripts": {
+    "start": "dotenv -e .env node index.js",
+    "start:dev": "dotenv -e .env nodemon start",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/statisticsnorway/be-workbench.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/statisticsnorway/be-workbench/issues"
+  },
+  "homepage": "https://github.com/statisticsnorway/be-workbench#readme",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-request-id": "^1.4.1",
+    "express-validator": "^5.3.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.9.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^5.4.0",
+    "sequelize-cli": "^5.4.0"
+  },
+  "devDependencies": {
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.11",
+    "supertest": "^4.0.2"
+  }
+}
