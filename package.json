@@ -4,8 +4,8 @@
   "description": "Backend for workbench UI",
   "main": "index.js",
   "scripts": {
-    "start": "dotenv -e .env node index.js",
-    "start:dev": "dotenv -e .env nodemon start",
+    "start": "./node_modules/.bin/dotenv -e .env node index.js",
+    "start:dev": "./node_modules/.bin/dotenv -e .env nodemon start",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "test": "jest"
   },
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/statisticsnorway/be-workbench#readme",
   "dependencies": {
     "dotenv": "^7.0.0",
+    "dotenv-cli": "^2.0.0",
     "express": "^4.16.4",
     "express-request-id": "^1.4.1",
     "express-validator": "^5.3.1",
