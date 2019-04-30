@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Run db migrations script
-RUN npm run db:migrate
+ENTRYPOINT npm run db:migrate
 
 EXPOSE 8000
 CMD [ "npm", "start" ]
