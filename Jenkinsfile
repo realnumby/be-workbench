@@ -19,8 +19,8 @@ pipeline {
         stage('Test and build') {
             steps {
                 slackSend color: '#439FE0', message: "${env.SLACK_PREFIX} Test and build - Start"
-                sh 'npm install'
-                sh 'npm test --no-watch'
+                sh 'yarn install'
+                sh 'yarn test --no-watch'
             }
             post {
                 success {
