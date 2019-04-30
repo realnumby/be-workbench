@@ -5,15 +5,9 @@ const app = express();
 // Mock db
 const db = {
     UserPreferences: {
-        create: (body) => {
-            return Promise.resolve(body);
-        },
-        findAll: (args) => {
-            return Promise.resolve([userPref]);
-        },
-        findByPk: (uuid) => {
-            return Promise.resolve(userPref);
-        },
+        create: jest.fn((body) => Promise.resolve(body)),
+        findAll: jest.fn(() => Promise.resolve([userPref])),
+        findByPk: jest.fn(() => Promise.resolve(userPref)),
     }
 };
 // Mock user preference
@@ -35,34 +29,42 @@ describe('Test the root paths', () => {
 
 describe('Test /api/preferences endpoints', () => {
 
-    test('It should list all preferences', () => {
-        return request(app).get('/api/allpreferences').expect(200, [userPref]);
+    afterEach(() => {
+        db.UserPreferences.create.mockClear();
+        db.UserPreferences.findAll.mockClear();
+        db.UserPreferences.findByPk.mockClear();
     });
 
-    test('It should get preference by ID', () => {
-        return request(app).get('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').expect(200, userPref);
+    test('It should list all preferences', async () => {
+        await request(app).get('/api/allpreferences').expect(200, [userPref]);
+        expect(db.UserPreferences.findAll).toHaveBeenCalled();
     });
 
-    test('It should get preference by query', () => {
-        return request(app).get('/api/preferences?username=user1').expect(200, [userPref]);
+    test('It should get preference by ID', async () => {
+        await request(app).get('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').expect(200, userPref);
+        expect(db.UserPreferences.findByPk).toHaveBeenCalled();
     });
 
-    test('It should be able to delete by ID', () => {
-        userPref.destroy = () => {
-            return Promise.resolve();
-        };
-        return request(app).delete('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').expect(204);
+    test('It should get preference by query', async () => {
+        await request(app).get('/api/preferences?username=user1').expect(200, [userPref]);
+        expect(db.UserPreferences.findAll).toHaveBeenCalledWith({"where": {"username" : "user1"}});
     });
 
-    test('It should be able to post preference', () => {
-        return request(app).post('/api/preferences').send(userPref).expect(201);
+    test('It should be able to delete by ID', async () => {
+        userPref.destroy = jest.fn(() => Promise.resolve());
+        await request(app).delete('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').expect(204);
+        expect(userPref.destroy).toHaveBeenCalled();
     });
 
-    test('It should be able to update preference', () => {
-        userPref.update  = () => {
-            return Promise.resolve();
-        };
-        return request(app).put('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').send(userPref).expect(200);
+    test('It should be able to post preference', async () => {
+        await request(app).post('/api/preferences').send(userPref).expect(201);
+        expect(db.UserPreferences.create).toHaveBeenCalled();
+    });
+
+    test('It should be able to update preference', async () => {
+        userPref.update = jest.fn(() => Promise.resolve());
+        await request(app).put('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').send(userPref).expect(200);
+        expect(userPref.update).toHaveBeenCalled();
     });
 
     test('It should fail for invalid ID', () => {
