@@ -15,8 +15,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Run db migrations script
-ENTRYPOINT npm run db:migrate
-
 EXPOSE 8000
-CMD [ "npm", "start" ]
+
+# Run db migrations script and start container
+ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
