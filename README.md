@@ -16,3 +16,10 @@ DB_PASSWORD=password
 ```
 - Create database with ``npm run db:migrate``
 - Start the app with ``npm run start:dev``
+
+## CORS
+If you plan to access this application from another application on the same server, you need to add the url (inlcuding http(s)) and port to 
+the env variable CORS_WHITELIST in the aforementioned ``.env`` file, e.g:
+```
+CORS_WHITELIST=http://localhost:3000
+``` 
