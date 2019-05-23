@@ -9,7 +9,7 @@ module.exports = function (UserPreferences) {
                 preferences: req.body.preferences,
             })
                 .then((user) => res.status(201).send(user))
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => res.status(mapErrorCode(error)).send(error));
         },
 
         update(req, res) {
@@ -25,9 +25,9 @@ module.exports = function (UserPreferences) {
                             preferences: req.body.preferences || prefs.preferences,
                         })
                         .then(() => res.status(200).send(prefs))
-                        .catch((error) => res.status(400).send(error));
+                        .catch((error) => res.status(mapErrorCode(error)).send(error));
                 })
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => res.status(mapErrorCode(error)).send(error));
         },
 
         retrieve(req, res) {
@@ -40,7 +40,7 @@ module.exports = function (UserPreferences) {
                     }
                     return res.status(200).send(prefs);
                 })
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => res.status(mapErrorCode(error)).send(error));
         },
 
         destroy(req, res) {
@@ -53,9 +53,9 @@ module.exports = function (UserPreferences) {
                     }
                     return prefs.destroy()
                         .then(() => res.status(204).send())
-                        .catch(error => res.status(400).send(error));
+                        .catch(error => res.status(mapErrorCode(error)).send(error));
                 })
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => res.status(mapErrorCode(error)).send(error));
         },
 
         query(req, res) {
@@ -63,20 +63,31 @@ module.exports = function (UserPreferences) {
                 where: {username: req.query.username}
             })
                 .then((result) => {
-                    if (result.length == 0) {
+                    if (result.length === 0) {
                         return res.status(404).send({
                             message: 'User preferences not found',
                         });
                     }
                     return res.status(200).send(result);
                 })
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => {
+                  res.status(mapErrorCode(error)).send(error)
+                });
         },
 
         list(req, res) {
             return UserPreferences.findAll()
                 .then((users) => res.status(200).send(users))
-                .catch((error) => res.status(400).send(error));
+                .catch((error) => res.status(mapErrorCode(error)).send(error));
         },
     }
 };
+
+const mapErrorCode = (error) => {
+  if (error.name === 'SequelizeConnectionRefusedError') {
+    return 500
+  } else {
+    return 400
+  }
+
+}

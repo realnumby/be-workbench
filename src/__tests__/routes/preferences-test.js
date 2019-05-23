@@ -71,6 +71,21 @@ describe('Test /api/preferences endpoints', () => {
         return request(app).get('/api/preferences/wrongId').expect(422);
     });
 
+    test('It should return 404 for user not found', async () => {
+        db.UserPreferences.findAll = jest.fn(() => Promise.resolve([]))
+        return await request(app).get('/api/preferences?username=doesnotexist').expect(404);
+    });
+
+    test('It should return 500 if no connection to database', () => {
+        db.UserPreferences.findByPk = jest.fn(() => Promise.reject({"name": "SequelizeConnectionRefusedError"}))
+        return request(app).get('/api/preferences/14023249-e187-4d16-b789-940d5d293a77').expect(500);
+    });
+
+    test('It should return 400 for constraint violation', () => {
+        db.UserPreferences.create = jest.fn(() => Promise.reject({"name": "SequelizeUniqueConstraintError"}))
+        return request(app).post('/api/preferences').send(userPref).expect(400);
+    });
+
     test('It should fail for invalid query string', () => {
         return request(app).get('/api/preferences?invalidQuery').expect(422);
     });
