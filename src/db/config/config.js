@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const devConfig = {
+const database = {
   dialect: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
@@ -10,6 +10,4 @@ const devConfig = {
   migrationStorageTableName: 'migrations'
 };
 
-module.exports = {
-  development: devConfig,
-};
+module.exports = database;
