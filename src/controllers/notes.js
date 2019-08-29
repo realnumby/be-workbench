@@ -27,6 +27,7 @@ module.exports = function () {
 
     return {
         getNotes(req, res) {
+            console.log("Using headers", getHeaders(req));
             return get(url + "notebook", {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))
                 .catch(handleError(res));
