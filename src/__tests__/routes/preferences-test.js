@@ -17,7 +17,7 @@ const userPref = {
     "preferences": {
         "language": "nb"
     }
-}
+};
 
 app.use('/api', require('../../routes/preferences')(db));
 
