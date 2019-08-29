@@ -14,7 +14,7 @@ const development = {
 
 const staging = {
   api: {
-    notebookService: 'https://bt3zzivqj5dptfsrkhyd2hjcdm-dot-europe-north1.dataproc.googleusercontent.com/zeppelin/api/notebook/',
+    notebookService: 'https://bt3zzivqj5dptfsrkhyd2hjcdm-dot-europe-north1.dataproc.googleusercontent.com/zeppelin/api/',
   }
 };
 
