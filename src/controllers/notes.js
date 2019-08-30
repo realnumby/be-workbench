@@ -7,10 +7,12 @@ const properties = require('../properties')[env];
 module.exports = function () {
 
     let url = properties.api.notebookService;
+    // Get the custom x-authorization from the request and use this for get authorized access to the external
+    // notebook service
     function getHeaders(req) {
         return {
             "accept": req.headers["accept"] || "*/*",
-            "authorization": req.headers["authorization"] || "",
+            "authorization": req.headers["x-authorization"] || "",
             "content-type": "application/json",
         };
     }
