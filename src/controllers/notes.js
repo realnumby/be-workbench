@@ -30,31 +30,38 @@ module.exports = function () {
     return {
         getNotes(req, res) {
             console.log("Using headers", getHeaders(req));
-            return get(url + "notebook", {headers: getHeaders(req)})
+            return get(url + "api/notebook", {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))
                 .catch(handleError(res));
         },
         getNote(req, res) {
-            return get(url + "notebook/" + req.params.id, {headers: getHeaders(req)})
-                .then((response) => res.status(response.status).send(response.data))
+            return get(url + "api/notebook/" + req.params.id, {headers: getHeaders(req)})
+                .then((response) => {
+                    let body = response.data;
+                    body.notebookurl = url + "#/notebook/" + req.params.id;
+                    res.status(response.status).send(body);
+                })
                 .catch(handleError(res));
         },
         deleteNote(req, res) {
-            return del(url + "notebook/" + req.params.id, {headers: getHeaders(req)})
+            return del(url + "api/notebook/" + req.params.id, {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))
                 .catch(handleError(res));
         },
         createNote(req, res) {
-            return post(url + "notebook", req.body, {headers: getHeaders(req)})
-                .then((response) => res.status(response.status).send(response.data))
+            return post(url + "api/notebook", req.body, {headers: getHeaders(req)})
+                .then((response) => {
+                    let body = response.data;
+                    body.notebookurl = url + "#/notebook/" + response.data.body;
+                    res.status(response.status).send(body);
+                })
                 .catch(handleError(res));
         },
         createParagraph(req, res) {
-            return post(url + "notebook/" + req.params.id + "/paragraph", req.body, {headers: getHeaders(req)})
+            return post(url + "api/notebook/" + req.params.id + "/paragraph", req.body, {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))
                 .catch(handleError(res));
         },
     };
-
 
 };

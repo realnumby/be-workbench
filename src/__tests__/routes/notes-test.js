@@ -62,10 +62,12 @@ describe('Test /api/notebook endpoints', () => {
     });
 
     test('It should post a new note', async () => {
+        let response = {"body" : "generatedId"};
         moxios.stubRequest('mock/api/notebook', {
-            status: 201
+            status: 201,
+            response: response
         });
-        await request(app).post('/api/notebook').send({"name" : "dummy"}).expect(201);
+        await request(app).post('/api/notebook').send({"name" : "dummy"}).expect(201, response);
     });
 
     test('It should post a new paragraph', async () => {
