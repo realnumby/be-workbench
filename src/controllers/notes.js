@@ -57,6 +57,11 @@ module.exports = function () {
                 })
                 .catch(handleError(res));
         },
+        startJobs(req, res) {
+            return post(url + "api/notebook/job/" + req.params.id, {}, {headers: getHeaders(req)})
+                .then((response) => res.status(response.status).send(response.data))
+                .catch(handleError(res));
+        },
         createParagraph(req, res) {
             return post(url + "api/notebook/" + req.params.id + "/paragraph", req.body, {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))
