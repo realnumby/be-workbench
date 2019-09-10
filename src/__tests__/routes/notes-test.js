@@ -7,8 +7,8 @@ const app = express();
 const db = {
     UserPreferences: {}
 };
-// Mock notes
-const notes = [
+// Mock notesBase
+const notesBase = [
     {
         "name": "/Ane/testnote",
         "id": "2EKZ8YHCD"
@@ -16,6 +16,20 @@ const notes = [
     {
         "name": "/BjornRoar/test1",
         "id": "2EMUE6W9B"
+    }
+];
+
+// Mock notesExpected
+const notesExpected = [
+    {
+        "name": "/Ane/testnote",
+        "id": "2EKZ8YHCD",
+        "noteurl": "mock/#/notebook/2EKZ8YHCD"
+    },
+    {
+        "name": "/BjornRoar/test1",
+        "id": "2EMUE6W9B",
+        "noteurl": "mock/#/notebook/2EMUE6W9B"
     }
 ];
 
@@ -30,26 +44,26 @@ describe('Test /api/notebook endpoints', () => {
         moxios.uninstall()
     });
 
-    test('It should list all notes', async () => {
+    test('It should list all notes with url to each note', async () => {
         moxios.stubRequest('mock/api/notebook', {
             status: 200,
-            response: notes
+            response: notesBase
         });
-        await request(app).get('/api/notebook').expect(200, notes);
+        await request(app).get('/api/notebook').expect(200, notesExpected);
     });
 
     test('It should get a single note', async () => {
         moxios.stubRequest('mock/api/notebook/2EMUE6W9B', {
             status: 200,
-            response: notes[1]
+            response: notesBase[1]
         });
-        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notes[1]);
+        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notesExpected[1]);
     });
 
     test('It should delete a single note', async () => {
         moxios.stubRequest('mock/api/notebook/2EMUE6W9B', {
             status: 204,
-            response: notes[1]
+            response: notesBase[1]
         });
         await request(app).delete('/api/notebook/2EMUE6W9B').expect(204);
     });

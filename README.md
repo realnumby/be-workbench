@@ -15,6 +15,10 @@ DB_USER=postgres
 DB_PASSWORD=password
 ```
 - Create database with ``npm run db:migrate``
+
+- Add an environment variable to the ``.env`` file, e.g: 
+```NODE_ENV=development```
+
 - Start the app with ``npm run start:dev``
 
 ## CORS

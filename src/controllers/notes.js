@@ -31,14 +31,19 @@ module.exports = function () {
         getNotes(req, res) {
             console.log("Using headers", getHeaders(req));
             return get(url + "api/notebook", {headers: getHeaders(req)})
-                .then((response) => res.status(response.status).send(response.data))
+                .then((response) => {
+                    let body = response.data
+                    // add note url to each note
+                    body.map(note => note.noteurl = url + "#/notebook/" + note.id )
+                    res.status(response.status).send(body)
+                })
                 .catch(handleError(res));
         },
         getNote(req, res) {
             return get(url + "api/notebook/" + req.params.id, {headers: getHeaders(req)})
                 .then((response) => {
                     let body = response.data;
-                    body.notebookurl = url + "#/notebook/" + req.params.id;
+                    body.noteurl = url + "#/notebook/" + req.params.id;
                     res.status(response.status).send(body);
                 })
                 .catch(handleError(res));
@@ -52,7 +57,7 @@ module.exports = function () {
             return post(url + "api/notebook", req.body, {headers: getHeaders(req)})
                 .then((response) => {
                     let body = response.data;
-                    body.notebookurl = url + "#/notebook/" + response.data.body;
+                    body.noteurl = url + "#/notebook/" + response.data.body;
                     res.status(response.status).send(body);
                 })
                 .catch(handleError(res));
