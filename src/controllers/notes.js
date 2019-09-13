@@ -19,8 +19,13 @@ module.exports = function () {
 
     function handleError(res) {
         return (error) => {
-            if (error.response) {
+            if (error instanceof Error) {
+              console.log("An error has occured: ", error)
+              if (error.response) {
                 res.status(error.response.status).send(error)
+              } else {
+                res.status(500).send(error)
+              }
             } else {
                 res.status(400).send(error)
             }
@@ -32,10 +37,11 @@ module.exports = function () {
             console.log("Using headers", getHeaders(req));
             return get(url + "api/notebook", {headers: getHeaders(req)})
                 .then((response) => {
-                    let body = response.data
-                    // add note url to each note
-                    body.map(note => note.noteurl = url + "#/notebook/" + note.id )
-                    res.status(response.status).send(body)
+                  // add note url to each note
+                  response.data.body.map(note => {
+                      note.noteurl = url + "#/notebook/" + note.id
+                     })
+                  res.status(response.status).send(response.data)
                 })
                 .catch(handleError(res));
         },

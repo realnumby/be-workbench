@@ -8,7 +8,10 @@ const db = {
     UserPreferences: {}
 };
 // Mock notesBase
-const notesBase = [
+const notesBase = {
+    "status": "OK",
+    "message": "",
+    "body": [
     {
         "name": "/Ane/testnote",
         "id": "2EKZ8YHCD"
@@ -17,10 +20,13 @@ const notesBase = [
         "name": "/BjornRoar/test1",
         "id": "2EMUE6W9B"
     }
-];
+]};
 
 // Mock notesExpected
-const notesExpected = [
+const notesExpected = {
+    "status": "OK",
+    "message": "",
+    "body": [
     {
         "name": "/Ane/testnote",
         "id": "2EKZ8YHCD",
@@ -31,7 +37,7 @@ const notesExpected = [
         "id": "2EMUE6W9B",
         "noteurl": "mock/#/notebook/2EMUE6W9B"
     }
-];
+]};
 
 app.use('/api', require('../../routes/notes')(db));
 
@@ -55,9 +61,9 @@ describe('Test /api/notebook endpoints', () => {
     test('It should get a single note', async () => {
         moxios.stubRequest('mock/api/notebook/2EMUE6W9B', {
             status: 200,
-            response: notesBase[1]
+            response: notesBase.body[1]
         });
-        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notesExpected[1]);
+        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notesExpected.body[1]);
     });
 
     test('It should delete a single note', async () => {
