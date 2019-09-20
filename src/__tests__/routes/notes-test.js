@@ -97,4 +97,11 @@ describe('Test /api/notebook endpoints', () => {
         await request(app).post('/api/notebook/2EMUE6W9B/paragraph').send({"name" : "dummy"}).expect(201);
     });
 
+    test('It should run a paragraph', async () => {
+        moxios.stubRequest('mock/api/notebook/run/2EMUE6W9B/20190917-155649_1796555479', {
+            status: 200
+        });
+        await request(app).post('/api/notebook/run/2EMUE6W9B/20190917-155649_1796555479').send({"name" : "dummy"}).expect(200);
+    });
+
 });

@@ -73,6 +73,11 @@ module.exports = function () {
                 .then((response) => res.status(response.status).send(response.data))
                 .catch(handleError(res));
         },
+        runParagraphSync(req, res) {
+          return post(url + "api/notebook/run/" + req.params.noteId + "/" + req.params.paragraphId, null, {headers: getHeaders(req)})
+            .then((response) => res.status(response.status).send(response.data))
+            .catch(handleError(res));
+        },
         createParagraph(req, res) {
             return post(url + "api/notebook/" + req.params.id + "/paragraph", req.body, {headers: getHeaders(req)})
                 .then((response) => res.status(response.status).send(response.data))

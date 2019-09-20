@@ -40,6 +40,7 @@ module.exports = (db) => {
     router.delete("/notebook/:id", notesController.deleteNote);
     router.post("/notebook", notesController.createNote);
     router.post("/notebook/job/:id", notesController.startJobs);
+    router.post("/notebook/run/:noteId/:paragraphId", notesController.runParagraphSync);
     router.post("/notebook/:id/paragraph", notesController.createParagraph);
     return router;
 };
