@@ -20,9 +20,11 @@ module.exports = function () {
     function handleError(res) {
         return (error) => {
             if (error instanceof Error) {
-              console.log("An error has occured: ", error)
-              if (error.response) {
-                res.status(error.response.status).send(error)
+              console.debug("An error has occured: ", error)
+              if (error.response && error.response.data) {
+                res.status(error.response.status).send(error.response.data.message)
+              } else if(error.response) {
+                res.status(error.response.status).send(error.response)
               } else {
                 res.status(500).send(error)
               }
