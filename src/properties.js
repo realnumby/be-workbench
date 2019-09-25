@@ -18,6 +18,12 @@ const staging = {
   }
 };
 
+const staging-bip= {
+  api: {
+    notebookService: 'https://o4hu4bekmndnfk7fn3q3g65esa-dot-europe-north1.dataproc.googleusercontent.com/zeppelin/'
+  }
+};
+
 module.exports = {
   test: test,
   development: development,
