@@ -39,8 +39,11 @@ module.exports = (db) => {
     router.get("/notebook/:id", notesController.getNote);
     router.delete("/notebook/:id", notesController.deleteNote);
     router.post("/notebook", notesController.createNote);
-    router.post("/notebook/job/:id", notesController.startJobs);
+    router.post("/notebook/job/:noteId", notesController.startJobs);
+    router.delete("/notebook/job/:noteId", notesController.stopJobs);
     router.post("/notebook/run/:noteId/:paragraphId", notesController.runParagraphSync);
+    router.delete("/notebook/:noteId/paragraph/:paragraphId", notesController.stopParagraph);
     router.post("/notebook/:id/paragraph", notesController.createParagraph);
+    router.get("/notebook/:noteId/paragraph/:paragraphId", notesController.getParagraph);
     return router;
 };

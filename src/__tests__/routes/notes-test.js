@@ -97,6 +97,20 @@ describe('Test /api/notebook endpoints', () => {
         await request(app).post('/api/notebook/2EMUE6W9B/paragraph').send({"name" : "dummy"}).expect(201);
     });
 
+    test('It should run all paragraphs', async () => {
+        moxios.stubRequest('mock/api/notebook/job/2EMUE6W9B', {
+            status: 200
+        });
+        await request(app).post('/api/notebook/job/2EMUE6W9B').expect(200)
+    })
+
+    test('It should stop all paragraphs', async () => {
+        moxios.stubRequest('mock/api/notebook/job/2EMUE6W9B', {
+            status: 200
+        });
+        await request(app).del('/api/notebook/job/2EMUE6W9B').expect(200)
+    })
+
     test('It should run a paragraph', async () => {
         moxios.stubRequest('mock/api/notebook/run/2EMUE6W9B/20190917-155649_1796555479', {
             status: 200
@@ -104,4 +118,35 @@ describe('Test /api/notebook endpoints', () => {
         await request(app).post('/api/notebook/run/2EMUE6W9B/20190917-155649_1796555479').send({"name" : "dummy"}).expect(200);
     });
 
+    test('It should stop a paragraph', async () => {
+        moxios.stubRequest('mock/api/notebook/2EMUE6W9B/paragraph/20190917-155649_1796555479', {
+            status: 200
+        });
+        await request(app).delete('/api/notebook/2EMUE6W9B/paragraph/20190917-155649_1796555479').expect(200)
+    });
+
+    test('It should return a paragraph', async () => {
+        moxios.stubRequest('mock/api/notebook/2EMUE6W9B/paragraph/20190917-155649_1796555479', {
+            status: 200,
+            response: paragraph.body
+        });
+        await request(app).get('/api/notebook/2EMUE6W9B/paragraph/20190917-155649_1796555479').expect(200, paragraph.body);
+    });
 });
+
+const paragraph = {
+    "status": "OK",
+    "message": "",
+    "body": {
+        "text": "%md\nIt works",
+        "user": "anonymous",
+        "results": {
+            "code": "SUCCESS",
+            "msg": [{
+                "type": "HTML",
+                "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003eIt works\u003c/p\u003e\n\u003c/div\u003e"
+            }
+            ]
+        }
+    }
+}
