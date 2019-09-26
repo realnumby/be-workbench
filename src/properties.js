@@ -18,7 +18,7 @@ const staging = {
   }
 };
 
-const staging-bip= {
+const staging_bip = {
   api: {
     notebookService: 'https://o4hu4bekmndnfk7fn3q3g65esa-dot-europe-north1.dataproc.googleusercontent.com/zeppelin/'
   }
@@ -28,4 +28,5 @@ module.exports = {
   test: test,
   development: development,
   staging: staging,
+  staging_bip: staging_bip,
 };
