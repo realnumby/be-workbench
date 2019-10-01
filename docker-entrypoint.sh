@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-npm run db:migrate
-npm start
+yarn run db:migrate
+yarn start
