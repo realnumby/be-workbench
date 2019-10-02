@@ -39,5 +39,15 @@
     "moxios": "^0.4.0",
     "nodemon": "^1.18.11",
     "supertest": "^4.0.2"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 73,
+        "functions": 91,
+        "lines": 92,
+        "statements": 92
+      }
+    }
   }
 }
