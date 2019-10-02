@@ -2,7 +2,7 @@ kind: pipeline
 name: be-workbench
 
 steps:
-  - name: install-test-and-build
+  - name: install-and-test
     image: node:current-alpine
     commands:
       - yarn install
@@ -27,7 +27,7 @@ steps:
   - name: publish-docker
     image: plugins/gcr
     settings:
-      repo: prod-bip/be-workbench
+      repo: prod-bip/workbench-backend
       registry: eu.gcr.io
       tags: "${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:8}"
       json_key:
