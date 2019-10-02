@@ -7,11 +7,12 @@
     "start": "node index.js",
     "start:dev": "./node_modules/.bin/dotenv -e .env nodemon start",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
-    "test": "jest"
+    "test": "jest test --verbose=false --watchAll=true",
+    "coverage": "jest test --coverage --watchAll=false"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/statisticsnorway/be-workbench.git"
+    "url": "https://github.com/statisticsnorway/be-workbench"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +23,10 @@
   "homepage": "https://github.com/statisticsnorway/be-workbench#readme",
   "dependencies": {
     "axios": "^0.19.0",
-    "dotenv": "^7.0.0",
+    "dotenv": "^8.1.0",
     "express": "^4.16.4",
     "express-request-id": "^1.4.1",
-    "express-validator": "^5.3.1",
+    "express-validator": "^6.2.0",
     "morgan": "^1.9.1",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
@@ -38,5 +39,15 @@
     "moxios": "^0.4.0",
     "nodemon": "^1.18.11",
     "supertest": "^4.0.2"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 73,
+        "functions": 91,
+        "lines": 92,
+        "statements": 92
+      }
+    }
   }
 }
