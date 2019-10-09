@@ -23,21 +23,23 @@ const notesBase = {
 ]};
 
 // Mock notesExpected
-const notesExpected = {
-    "status": "OK",
-    "message": "",
-    "body": [
-    {
-        "name": "/Ane/testnote",
-        "id": "2EKZ8YHCD",
-        "noteurl": "mock/#/notebook/2EKZ8YHCD"
-    },
-    {
-        "name": "/BjornRoar/test1",
-        "id": "2EMUE6W9B",
-        "noteurl": "mock/#/notebook/2EMUE6W9B"
-    }
-]};
+const notesExpected = (lds) => {
+    return ({
+        "status": "OK",
+        "message": "",
+        "body": [
+            {
+                "name": "/Ane/testnote",
+                "id": "2EKZ8YHCD",
+                "noteurl": "mock" + lds + "/#/notebook/2EKZ8YHCD"
+            },
+            {
+                "name": "/BjornRoar/test1",
+                "id": "2EMUE6W9B",
+                "noteurl": "mock" + lds + "/#/notebook/2EMUE6W9B"
+            }
+        ]
+    })};
 
 app.use('/api', require('../../routes/notes')(db));
 
@@ -50,12 +52,30 @@ describe('Test /api/notebook endpoints', () => {
         moxios.uninstall()
     });
 
+    test('It should use the correct Notebook URL', async () => {
+        moxios.stubRequest('mock/api/notebook', {
+            status: 200,
+            response: notesBase
+        });
+        await request(app).get('/api/notebook?lds=A').expect(200, notesExpected(""));
+        moxios.stubRequest('mockB/api/notebook', {
+            status: 200,
+            response: notesBase
+        });
+        await request(app).get('/api/notebook?lds=B').expect(200, notesExpected("B"));
+        moxios.stubRequest('mockC/api/notebook', {
+            status: 200,
+            response: notesBase
+        });
+        await request(app).get('/api/notebook?lds=C').expect(200, notesExpected("C"));
+    })
+
     test('It should list all notes with url to each note', async () => {
         moxios.stubRequest('mock/api/notebook', {
             status: 200,
             response: notesBase
         });
-        await request(app).get('/api/notebook').expect(200, notesExpected);
+        await request(app).get('/api/notebook').expect(200, notesExpected(""));
     });
 
     test('It should get a single note', async () => {
@@ -63,7 +83,7 @@ describe('Test /api/notebook endpoints', () => {
             status: 200,
             response: notesBase.body[1]
         });
-        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notesExpected.body[1]);
+        await request(app).get('/api/notebook/2EMUE6W9B').expect(200, notesExpected("").body[1]);
     });
 
     test('It should delete a single note', async () => {
