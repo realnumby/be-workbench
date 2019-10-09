@@ -6,7 +6,19 @@ const properties = require('../properties')[env];
 
 module.exports = function () {
 
-    let url = properties.api.notebookService;
+    const getUrl = (lds) => {
+      switch (lds) {
+        case 'old':
+          return properties.api.notebookServiceOld
+        default:
+        case 'A':
+          return properties.api.notebookServiceA
+        case 'B':
+          return properties.api.notebookServiceB
+        case 'C':
+          return properties.api.notebookServiceC
+      }
+    }
     // Get the custom x-authorization from the request and use this for get authorized access to the external
     // notebook service
     function getHeaders(req) {
@@ -36,7 +48,7 @@ module.exports = function () {
 
   return {
     getNotes(req, res) {
-      console.log("Using headers", getHeaders(req));
+      let url = getUrl(req.query.lds)
       return get(url + "api/notebook", {headers: getHeaders(req)})
         .then((response) => {
           // add note url to each note
@@ -48,6 +60,7 @@ module.exports = function () {
         .catch(handleError(res));
     },
     getNote(req, res) {
+      let url = getUrl(req.query.lds)
       return get(url + "api/notebook/" + req.params.id, {headers: getHeaders(req)})
         .then((response) => {
           let body = response.data;
@@ -57,11 +70,13 @@ module.exports = function () {
         .catch(handleError(res));
     },
     deleteNote(req, res) {
+      let url = getUrl(req.query.lds)
       return del(url + "api/notebook/" + req.params.id, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     createNote(req, res) {
+      let url = getUrl(req.query.lds)
       return post(url + "api/notebook", req.body, {headers: getHeaders(req)})
         .then((response) => {
           let body = response.data;
@@ -71,31 +86,37 @@ module.exports = function () {
         .catch(handleError(res));
     },
     startJobs(req, res) {
+      let url = getUrl(req.query.lds)
       return post(url + "api/notebook/job/" + req.params.noteId, {}, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     stopJobs(req, res) {
+      let url = getUrl(req.query.lds)
       return del(url + "api/notebook/job/" + req.params.noteId, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     runParagraphSync(req, res) {
+      let url = getUrl(req.query.lds)
       return post(url + "api/notebook/run/" + req.params.noteId + "/" + req.params.paragraphId, null, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     stopParagraph(req, res) {
+      let url = getUrl(req.query.lds)
       return del(url + "api/notebook/" + req.params.noteId + "/paragraph/" + req.params.paragraphId, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     createParagraph(req, res) {
+      let url = getUrl(req.query.lds)
       return post(url + "api/notebook/" + req.params.id + "/paragraph", req.body, {headers: getHeaders(req)})
         .then((response) => res.status(response.status).send(response.data))
         .catch(handleError(res));
     },
     getParagraph(req, res) {
+      let url = getUrl(req.query.lds)
       return get(url + "api/notebook/" + req.params.noteId + "/paragraph/" + req.params.paragraphId, {headers: getHeaders(req)})
         .then((response) => {
           res.status(response.status).send(response.data)
