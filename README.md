@@ -1,4 +1,6 @@
 # be-workbench
+[![Build Status](https://drone.prod-bip-ci.ssb.no/api/badges/statisticsnorway/be-workbench/status.svg)](https://drone.prod-bip-ci.ssb.no/statisticsnorway/be-workbench)
+
 This is the backend application for the workbench UI
 
 ## Getting started
