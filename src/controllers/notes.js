@@ -8,11 +8,10 @@ module.exports = function () {
 
     const getUrl = (lds) => {
       switch (lds) {
-        case 'old':
-          return properties.api.notebookServiceOld
         default:
+        /* falls through */
         case 'A':
-          return properties.api.notebookServiceA
+          return properties.api.notebookService
         case 'B':
           return properties.api.notebookServiceB
         case 'C':
