@@ -102,7 +102,6 @@ steps:
         - push
     depends_on:
       - test
-      - build
 
   - name: slack
     image: plugins/slack
@@ -120,7 +119,6 @@ steps:
       status: [ success, failure ]
     depends_on:
       - test
-      - build
 
 trigger:
   ref:
