@@ -34,7 +34,7 @@
     "sequelize-cli": "^5.5.0"
   },
   "devDependencies": {
-    "dotenv-cli": "^2.0.0",
+    "dotenv-cli": "^3.0.0",
     "jest": "^24.7.1",
     "moxios": "^0.4.0",
     "nodemon": "^1.18.11",
